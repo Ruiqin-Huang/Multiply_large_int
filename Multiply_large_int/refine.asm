@@ -24,7 +24,7 @@ neg_flag          dword  0           ;负数标志
 input_hint_1		byte	"Please input operant_1(Max length:200):", 0
 input_hint_2		byte	"Please input operant_2(Max length:200):", 0
 output_hint			byte	"operant_1 * operant_2 = ", 0
-error_length		byte	"Input string too long! Please retype your string:", 0
+error_length		byte	"Input string too long! Please retype your string:", 0dh, 0ah, 0
 debug_info_1		byte	"Input operant_1 length(sign included):", 0
 debug_info_2		byte	"Input operant_2 length(sign included):", 0
 debug_info_3		byte	"Input operant_1 length(digital part):", 0
@@ -129,7 +129,7 @@ multi_loop2:
 
 	
 	mov		ebx, 0
-reset_rax_rcx:
+reset_eax_ecx:
 	mov		eax, 0
 	add		eax, operand_1_len	
 	add		eax, operand_2_len	
@@ -141,7 +141,7 @@ reset_rax_rcx:
 	mov		eax, 0
 
 result_count:
-	mov		eax, dword ptr [esi+4*ebx]
+	mov		eax, dword ptr [esi+4*ebx]		
 	mov		edx, 0
 	div		mod_num
 	add		dword ptr [esi+4*ebx+4], eax	;商作为下一位的进位，预先存储至结果下一位中
@@ -149,10 +149,10 @@ result_count:
 	inc		ebx
 	loop	result_count
 
-	jmp		reset_rax_rcx
+	jmp		reset_eax_ecx
 
-result_len_count:
-	mov		edx, dword ptr [esi+4*ebx]
+result_len_count:							;统计结果位数
+	mov		edx, dword ptr [esi+4*ebx]		;此时dword ptr [esi+4*ebx]指向结果的可能最高位，如3位数*4位数，指向结果数组第7位
 	cmp		edx, 0							;判断最高位是否为0
 	jnz		judge_zero
 	dec		eax								;不为零: result_len(eax)--
@@ -161,12 +161,12 @@ result_len_count:
 
 judge_zero:
 	mov		result_len, eax
-	cmp		result_len, 1						;若答案为0，将负数标志置0
-	jnz		mul_end
-	mov		edx, result_intArr
+	cmp		result_len, 1						
+	jnz		mul_end								;若结果位数不为1，直接跳转至mul_end
+	mov		edx, result_intArr					;若结果位数为1，判断结果是否为0
 	cmp		edx, 0
 	jnz		mul_end
-	mov		neg_flag, 0						
+	mov		neg_flag, 0							;若结果位数为1且结果为0，将负数标志置0			
 mul_end:
 	ret
 multiply endp
