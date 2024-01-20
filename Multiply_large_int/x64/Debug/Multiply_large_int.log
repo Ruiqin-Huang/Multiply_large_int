@@ -1,0 +1,7 @@
+﻿  Assembling multiply_large_int.asm...
+  Assembling refine.asm...
+refine.asm(1): error A2008: syntax error : .
+refine.asm(2): error A2008: syntax error : .
+refine.asm(39): error A2008: syntax error : str_input
+refine.asm(79): fatal error A1010: unmatched block nesting : str_to_intArr
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\BuildCustomizations\masm.targets(50,5): error MSB3721: 命令“ml64.exe /c /nologo /Zi /Fo"x64\Debug\refine.obj" /I "D:\masm32\include" /W3 /errorReport:prompt  /Tarefine.asm”已退出，返回代码为 1。
