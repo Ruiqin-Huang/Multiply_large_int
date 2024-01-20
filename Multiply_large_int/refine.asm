@@ -24,7 +24,7 @@ neg_flag          dword  0           ;负数标志
 input_hint_1		byte	"Please input operant_1(Max length:200):", 0
 input_hint_2		byte	"Please input operant_2(Max length:200):", 0
 output_hint			byte	"operant_1 * operant_2 = ", 0
-error_length		byte	"Input string too long!", 0
+error_length		byte	"Input string too long! Please retype your string:", 0
 debug_info_1		byte	"Input operant_1 length(sign included):", 0
 debug_info_2		byte	"Input operant_2 length(sign included):", 0
 debug_info_3		byte	"Input operant_1 length(digital part):", 0
@@ -173,6 +173,8 @@ multiply endp
 
 start:
 main proc
+
+input_string:
 	invoke	printf, offset input_hint_1	
 	invoke	scanf, offset input_struct, offset operand_1_str    ;输入操作数1，操作数2
 	invoke	printf, offset input_hint_2
@@ -208,6 +210,26 @@ main proc
 
 error_label:
 	invoke	printf, offset error_length
+
+	; 清零 operand_1_str
+	lea edi, operand_1_str
+	mov ecx, 200
+	mov al, 0
+	rep stosb
+
+	; 清零 operand_2_str
+	lea edi, operand_2_str
+	mov ecx, 200
+	mov al, 0
+	rep stosb
+
+	; 清零 result_str
+	lea edi, result_str
+	mov ecx, 400
+	mov al, 0
+	rep stosb
+	
+	jmp 	input_string
 
 system_pause:
 	invoke	system, addr sys_pause								;暂停程序，查看输出  

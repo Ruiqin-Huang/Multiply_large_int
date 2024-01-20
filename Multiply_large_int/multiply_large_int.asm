@@ -24,7 +24,7 @@ neg_flag          dword  0           ;负数标志
 input_hint_1		byte	"Please input operant_1:", 0
 input_hint_2		byte	"Please input operant_2:", 0
 output_hint			byte	"operant_1 * operant_2 = ", 0
-debug_info_1		byte	"Input operant_1 length(sign included):", 0
+debug_info_1		byte	"Input operant_1 length(sign included):", 0ah, 0
 debug_info_2		byte	"Input operant_2 length(sign included):", 0
 debug_info_3		byte	"Input operant_1 length(digital part):", 0
 debug_info_4		byte	"Input operant_2 length(digital part):", 0
